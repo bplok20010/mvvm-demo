@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>MVVM基本实现</title>
+</head>
+
+<body style="background:#FFF;">
+<script type="text/javascript" src="watcher.js"></script>
+<script type="text/javascript" src="bindings.js"></script>
+<style type="text/css">
+
+.con {
+	height:40px;
+	border:1px solid #000;	
+}
+.btn {
+	display:inline-block;
+	text-decoration:none;
+	border:1px solid #000;
+	padding:2px;
+	color:#000	
+}
+</style>
+<div id="demo">
+	<fieldset>
+    	<legend>数据双向绑定：</legend>
+        请输入：<input type="text" value=""  bind-value="info"/>
+        <div bind-text="'你输入的信息为：'+info" style="color:green;"></div>
+    </fieldset>
+    
+    <fieldset>
+    <legend>UI逻辑：</legend>
+    	<a href="###" class="btn" bind-click="count++">计数器+</a>
+    	<a href="###" class="btn" bind-click="count--">计数器-</a>
+    	<div bind-text="'当前计数器值：'+count" style="color:green;"></div>
+   		<div 
+        	bind-text="'计数器值大于10时我会被隐藏：'+count" 
+            bind-hidden="count>10" 
+            bind-background="count<0?'red':'#E4E2E2'"
+        ></div>
+    </fieldset>
+</div>
+<div style="margin-top:15px;">
+控制台：<button id="run" onclick="runJS()">运行</button> 试试改变vm.info的值..
+<div class="con" id="con" contenteditable>
+
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+function runJS(){
+	var expr = con.innerHTML;
+	eval(expr);
+	vm.$digest();	
+	con.innerHTML = '';
+}
+
+var vm = new Scope();
+
+vm.info = 'mvvm';
+vm.count = 1;
+
+//数据绑定
+applyBindings( vm, demo );
+
+</script>
+
+</body>
+</html>
